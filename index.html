@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — Ton Nom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #fafaf8;
+      --surface:  #f3f2ee;
+      --text:     #1a1a18;
+      --muted:    #6b6b67;
+      --faint:    #a8a8a3;
+      --border:   rgba(0,0,0,0.09);
+      --border2:  rgba(0,0,0,0.18);
+      --accent:   #1a1a18;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      #141412;
+        --surface: #1e1e1b;
+        --text:    #f0ede6;
+        --muted:   #888880;
+        --faint:   #555550;
+        --border:  rgba(255,255,255,0.08);
+        --border2: rgba(255,255,255,0.18);
+        --accent:  #f0ede6;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── Header / Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    nav .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 6rem 0 4rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      max-width: 700px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    .hero-disciplines {
+      display: flex;
+      gap: 8px;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .discipline-tag {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border: 0.5px solid var(--border2);
+      border-radius: 20px;
+      color: var(--muted);
+    }
+
+    /* ── Filters ── */
+    .filters-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.5rem 0 1.5rem;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .filters-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    /* ── Grid ── */
+    #projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-bottom: 5rem;
+    }
+
+    @media (max-width: 768px) {
+      #projects-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      #projects-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Card ── */
+    .card {
+      border: 0.5px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--bg);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .card:hover {
+      border-color: var(--border2);
+      transform: translateY(-3px);
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
+
+    .card-body {
+      padding: 14px 16px 18px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-cat {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .cat-video  { background: #dceeff; color: #184e80; }
+    .cat-photo  { background: #ddf3e4; color: #1a5c32; }
+    .cat-design { background: #fef0d8; color: #7a4a0a; }
+
+    @media (prefers-color-scheme: dark) {
+      .cat-video  { background: #0c3358; color: #89c4f4; }
+      .cat-photo  { background: #0d3320; color: #6dd498; }
+      .cat-design { background: #3d2500; color: #f5b84a; }
+    }
+
+    .card-year {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 5px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .card-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--border2);
+      padding-bottom: 1px;
+      transition: color 0.15s;
+    }
+
+    .card-link:hover { color: var(--text); }
+
+    /* ── Empty state ── */
+    #empty-state {
+      display: none;
+      text-align: center;
+      padding: 4rem 0;
+      color: var(--muted);
+      grid-column: 1/-1;
+    }
+
+    /* ── About ── */
+    .about {
+      border-top: 0.5px solid var(--border);
+      padding: 4rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .about { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    .about-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    .about-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .about-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Contact ── */
+    .contact {
+      border-top: 0.5px solid var(--border);
+      padding: 3rem 0 5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .contact-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+    }
+
+    .contact-email {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 0.5px solid var(--border2);
+      padding-bottom: 1px;
+      transition: color 0.15s;
+    }
+
+    .contact-email:hover { color: var(--text); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 1.5rem 0;
+    }
+
+    footer .inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--faint);
+    }
+
+    /* ── Loading skeleton ── */
+    .skeleton {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 0.5px solid var(--border);
+    }
+
+    .skel-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--surface);
+      animation: shimmer 1.4s infinite;
+    }
+
+    .skel-body { padding: 14px 16px 18px; }
+
+    .skel-line {
+      height: 12px;
+      border-radius: 6px;
+      background: var(--surface);
+      margin-bottom: 8px;
+      animation: shimmer 1.4s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="inner">
+      <a class="nav-logo" href="#">Ton Nom</a>
+      <ul class="nav-links">
+        <li><a href="#work">Projets</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrapper">
+      <p class="hero-eyebrow">Basé à Abidjan, disponible partout</p>
+      <h1 class="hero-title">Image, <em>mouvement</em><br>et design.</h1>
+      <p class="hero-sub">
+        Je crée des images qui racontent. Montage vidéo, photographie documentaire et identités visuelles pensées pour durer.
+      </p>
+      <div class="hero-disciplines">
+        <span class="discipline-tag">Montage vidéo</span>
+        <span class="discipline-tag">Photographie</span>
+        <span class="discipline-tag">Graphisme</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrapper">
+
+      <div class="filters-bar">
+        <span class="filters-label">Filtrer par</span>
+        <div class="filters">
+          <button class="filter-btn active" data-cat="all">Tout</button>
+          <button class="filter-btn" data-cat="video">Vidéo</button>
+          <button class="filter-btn" data-cat="photo">Photo</button>
+          <button class="filter-btn" data-cat="design">Graphisme</button>
+        </div>
+      </div>
+
+      <div id="projects-grid">
+        <!-- Skeletons pendant le chargement -->
+        <div class="skeleton" id="skel1">
+          <div class="skel-thumb"></div>
+          <div class="skel-body">
+            <div class="skel-line" style="width:40%"></div>
+            <div class="skel-line" style="width:80%"></div>
+            <div class="skel-line" style="width:60%"></div>
+          </div>
+        </div>
+        <div class="skeleton" id="skel2" style="animation-delay:0.1s">
+          <div class="skel-thumb"></div>
+          <div class="skel-body">
+            <div class="skel-line" style="width:35%"></div>
+            <div class="skel-line" style="width:90%"></div>
+            <div class="skel-line" style="width:50%"></div>
+          </div>
+        </div>
+        <div class="skeleton" id="skel3" style="animation-delay:0.2s">
+          <div class="skel-thumb"></div>
+          <div class="skel-body">
+            <div class="skel-line" style="width:45%"></div>
+            <div class="skel-line" style="width:70%"></div>
+            <div class="skel-line" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrapper">
+      <div class="about">
+        <p class="about-label">À propos</p>
+        <p class="about-text">
+          <strong>Créatif basé à Abidjan</strong>, je travaille à l'intersection de l'image fixe, du mouvement et du design graphique. Chaque projet est une occasion de construire une narration visuelle cohérente — du cadrage à l'écran final.<br><br>
+          Disponible pour des missions freelance en Côte d'Ivoire et à l'international.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrapper">
+      <div class="contact">
+        <h2 class="contact-title">Travaillons ensemble.</h2>
+        <a class="contact-email" href="mailto:tonemail@exemple.com">tonemail@exemple.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="inner">
+      <p>© 2025 Ton Nom</p>
+      <p>Abidjan, Côte d'Ivoire</p>
+    </div>
+  </footer>
+
+  <script>
+    const CAT_LABELS = { video: 'Vidéo', photo: 'Photo', design: 'Graphisme' };
+    const CAT_CLASSES = { video: 'cat-video', photo: 'cat-photo', design: 'cat-design' };
+
+    async function loadProjects() {
+      const grid = document.getElementById('projects-grid');
+
+      try {
+        const res = await fetch('projects.json');
+        const projects = await res.json();
+
+        // Supprimer les skeletons
+        ['skel1','skel2','skel3'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.remove();
+        });
+
+        projects.forEach((p, i) => {
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.dataset.cat = p.category;
+          card.style.animationDelay = `${i * 0.06}s`;
+
+          const linkHtml = p.link
+            ? `<a class="card-link" href="${p.link}" target="_blank" rel="noopener">Voir le projet →</a>`
+            : '';
+
+          card.innerHTML = `
+            <img class="card-thumb" src="${p.thumbnail}" alt="${p.title}" loading="lazy" />
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="card-cat ${CAT_CLASSES[p.category]}">${CAT_LABELS[p.category]}</span>
+                <span class="card-year">${p.year}</span>
+              </div>
+              <h2 class="card-title">${p.title}</h2>
+              <p class="card-desc">${p.description}</p>
+              ${linkHtml}
+            </div>`;
+
+          grid.appendChild(card);
+        });
+
+      } catch (e) {
+        ['skel1','skel2','skel3'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.remove();
+        });
+        const msg = document.createElement('div');
+        msg.id = 'empty-state';
+        msg.style.display = 'block';
+        msg.textContent = 'Impossible de charger projects.json. Vérifiez que le fichier est dans le même dossier.';
+        grid.appendChild(msg);
+      }
+    }
+
+    // Filtres
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.card').forEach(card => {
+          const show = cat === 'all' || card.dataset.cat === cat;
+          card.classList.toggle('hidden', !show);
+        });
+      });
+    });
+
+    loadProjects();
+  </script>
+
+</body>
+</html>
